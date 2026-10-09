@@ -1,0 +1,31 @@
+services:
+  api:
+    build: .
+    network_mode: service:redis
+    environment:
+      REDIS_URL: redis://127.0.0.1:6379/0
+    depends_on:
+      - redis
+      - ollama
+    restart: unless-stopped
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "8001:8000"
+    command: redis-server --bind 127.0.0.1 --appendonly yes
+    volumes:
+      - redis-data:/data
+    restart: unless-stopped
+  ollama:
+    image: ollama/ollama:latest
+    network_mode: service:redis
+    environment:
+      OLLAMA_HOST: 127.0.0.1:11434
+    depends_on:
+      - redis
+    volumes:
+      - ollama-data:/root/.ollama
+    restart: unless-stopped
+volumes:
+  redis-data:
+  ollama-data:

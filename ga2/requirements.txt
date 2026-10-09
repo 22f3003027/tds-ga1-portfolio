@@ -1,0 +1,6 @@
+fastapi
+uvicorn
+redis
+PyJWT[crypto]
+prometheus-client
+httpx
