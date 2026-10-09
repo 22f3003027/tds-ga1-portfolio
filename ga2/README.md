@@ -18,3 +18,5 @@ package their archives. Publish them only with the account owner's permission.
 
 Codespace endpoints require the Codespace to remain running; they can be
 restarted with the Compose command before checking or saving the exam again.
+
+The submitted chat endpoint uses qwen2.5:1.5b with deterministic generation. Install it with `docker compose exec ollama ollama pull qwen2.5:1.5b`. Invoice extraction uses qwen2.5:0.5b. Signed archives were published with account-owner permission under submissions/ga2; local recording work stays ignored.

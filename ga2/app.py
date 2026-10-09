@@ -58,7 +58,7 @@ class Token(BaseModel):token:str
 @app.post('/verify')
 def verify(body:Token):
  try:
-  c=jwt.decode(body.token,PUBLIC_KEY,algorithms=['RS256'],audience='tds-yvft7eah.apps.exam.local',issuer='https://idp.exam.local',options={'require':['exp','iss','aud','email','sub']})
+  c=jwt.decode(body.token,PUBLIC_KEY,algorithms=['RS256'],audience='tds-yvft7eah.apps.exam.local',issuer='https://idp.exam.local',options={'require':['exp','iss','aud','email','sub'],'verify_iat':False})
   return {'valid':True,'email':c['email'],'sub':c['sub'],'aud':c['aud']}
  except jwt.PyJWTError:return JSONResponse({'valid':False},status_code=401)
 @app.get('/effective-config')
@@ -120,5 +120,5 @@ async def extract(b:InvoiceText):
 @app.post('/v1/chat/completions')
 async def chat(req:Request):
  async with httpx.AsyncClient(timeout=120) as client:
-  r=await client.post('http://127.0.0.1:11434/v1/chat/completions',json=await req.json())
+  r=await client.post('http://127.0.0.1:11434/v1/chat/completions',json={**(await req.json()),'temperature':0})
  return JSONResponse(r.json(),status_code=r.status_code)
